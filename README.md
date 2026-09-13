@@ -1,81 +1,69 @@
 # FLOWARE
 
-> **Real-Time Financial Transaction Ecosystem Monitoring & Explainable Fraud Detection Platform**  
+> **Explainable Financial Risk Intelligence Layer & Real-Time Investigation Platform**  
 > *EFOS Global Finance Hackathon 2026 — Track 02 (Audit & Risk), Case 1: Suspicious Transaction Detection*
 
 ---
 
 ## 📌 Overview
 
-**FLOWARE** is a production-grade, client-side fintech platform that monitors financial transaction streams in real time, visualizes account ecosystem money movement, and delivers human-readable SHAP explanations for every flagged transaction.
+**FLOWARE** is an explainable financial risk intelligence layer that combines a **Python-based Machine Learning pipeline** with a **real-time React/TypeScript investigation interface**.
 
-Existing fraud detection models achieve high classification accuracy but suffer from black-box unexplainability, while legacy rule engines generate **85–95% false positives**. **FLOWARE** bridges this gap by pairing real ML classification accuracy with instant, natural-language feature attribution for audit and risk compliance.
-
----
-
-## ✨ Key Platform Features
-
-### 1. 🌐 Live Financial Flow Canvas (Main Viewport)
-- **Permanent Account Cards**: Renders account nodes (`ACC ••••8392`) displaying account category, total IN volume (`₹45,000`), total OUT volume (`₹35,000`), and risk tier badges (`NORMAL`, `MEDIUM`, `HIGH RISK`).
-- **Directional Money Movement Streams**: Visualizes real-time money movement between Source → Target → Downstream accounts with directional transfer arrows, amounts (`₹12,000`), and timestamps (`10:42 AM`).
-- **Glowing ML Risk Aura**: Suspicious accounts identified by the ML model ignite with a pulsing coral-red risk aura (`pulse-red-aura`) and warning indicator badges.
-
-### 2. ⚡ Autonomous Stream Ticker (350ms Cadence)
-- **Continuous Live Feed**: Streams dataset transactions autonomously every 350ms (~3 transactions/sec) into the feed without requiring manual play/pause video controls.
-- **Side Feed**: Real-time transaction list (`10:42:01 ACC1024 → ACC8392 ₹8,500`) prepending new entries dynamically.
-
-### 3. 🎯 ML Model Interception & Auto-Focus
-- **Instant Risk Interception**: When an incoming transaction is scored as high risk (`predicted_probability > 0.70`), FLOWARE locks Investigation Focus onto that account and triggers a live alert: **"🚨 LIVE ML INTERCEPTION DETECTED"**.
-
-### 4. 🔍 Visual SHAP Inspector Panel
-- **XGBoost Risk Score Arc Gauge**: SVG semi-circle arc meter showing exact model confidence percentage.
-- **Visual Feature Impact Bars**: Color-coded progress meters displaying feature contribution weights (`Transfer Type: +38%`, `Origin Balance Error: +34%`, `Log Amount: +18%`).
-- **Natural Language SHAP Explanation**: Renders the exact feature attribution text produced by the model (e.g. *"Flagged primarily because the transaction was a direct transfer and account balances did not update consistently with transaction amount..."*).
-
-### 5. 🛡️ Auditor Review Queue & Institutional Governance Controls
-- **Auditor Queue**: Filtered view of MEDIUM and HIGH risk transactions ordered by risk score descending, including `actual_isFraud` validation comparison tooltips.
-- **Recommended Controls**: 5 icon-fronted governance cards (Dual authorization, hard velocity limits, monthly retraining pipelines, human-in-the-loop review, and immutable audit logging).
+Legacy fraud detection systems suffer from either high false-positive rates (85–95%) or unexplainable black-box ML predictions. FLOWARE addresses this by pairing an optimized **XGBoost gradient boosting classifier** with **TreeSHAP feature attribution** to deliver natural-language, auditor-ready explanation strings alongside real-time financial flow graph visualizations.
 
 ---
 
-## 📊 Pre-Trained Model & Dataset Metrics
+## 🏗️ End-to-End System Architecture
 
-| Parameter | Value |
-| :--- | :--- |
-| **Dataset** | PaySim Synthetic Financial Transactions |
-| **Training Records** | 1,119,136 transactions |
-| **Validation Subset** | 223,828 transactions |
-| **Model Algorithm** | XGBoost (`binary:logistic`) |
-| **Ensemble Trees** | 200 trees (`num_trees: 200`) |
-| **Class Imbalance Weight** | `scale_pos_weight: 200.418442` |
-| **Precision** | **0.72** |
-| **Recall** | **0.82** |
-| **F1 Score** | **0.77** |
-| **PR-AUC** | **0.87** |
-
----
-
-## 🏗️ Architecture & Tech Stack
-
-```mermaid
-graph TD
-    A[PaySim Scored CSV & XGBoost Model JSON] -->|Auto-Load on Startup| B[Client-Side Graph Engine]
-    
-    B --> C[Compact Stream Side Feed - 350ms Ticker]
-    B --> D[Live Financial Flow Canvas - Account Cards & Edges]
-    B --> E[Model Risk & SHAP Inspector Panel]
-    
-    C -->|Click Event| F[Investigation Focus Account]
-    D -->|Click Account Card / Transfer Line| F
-    
-    F -->|Highlight Connected Flow| D
-    F -->|Display ML Arc Gauge & SHAP Explanation| E
 ```
-
-- **Frontend**: React 18, TypeScript, Vite
-- **Styling**: Vanilla CSS (Custom Design Tokens, CSS Keyframes Motion System)
-- **Data Engine**: PapaParse (Chunked client-side CSV streaming)
-- **Icons**: Lucide React
+                    FLOWARE
+        Financial Flow Awareness & Risk Engine
+                           │
+                           ▼
+                TRANSACTION STREAM
+                           │
+                           ▼
+             PYTHON FEATURE ENGINE
+                           │
+            ┌──────────────┴──────────────┐
+            ▼                             ▼
+    Transaction Signals            Behavioral Signals
+    Amount / Type / Time            Frequency / Counterparty
+            │                             │
+            └──────────────┬──────────────┘
+                           ▼
+                    XGBOOST MODEL
+                           │
+                           ▼
+                      RISK SCORE
+                           │
+                 ┌─────────┴─────────┐
+                 ▼                   ▼
+            TreeSHAP             Risk Tier
+            WHY?                 LOW/MED/HIGH
+                 │                   │
+                 └─────────┬─────────┘
+                           ▼
+                    ALERT TRIAGE
+                           │
+                           ▼
+                 CASE GROUPING
+                           │
+                           ▼
+               INVESTIGATOR QUEUE
+                           │
+                           ▼
+              REACT / TYPESCRIPT UI
+                           │
+             ┌─────────────┴─────────────┐
+             ▼                           ▼
+      Financial Flow                Transaction
+        Visualization                 Stream
+             │                           │
+             └─────────────┬─────────────┘
+                           ▼
+                   HUMAN DECISION
+```
 
 ---
 
@@ -83,57 +71,109 @@ graph TD
 
 ```
 floware/
-├── public/
-│   └── data/
-│       ├── scored_transactions.csv    # PaySim transaction stream with ML scores
-│       └── model_xgboost.json         # Pre-trained XGBoost model configuration & weights
-├── src/
-│   ├── components/
-│   │   ├── auditor/                  # Auditor Review Queue & Tooltips
-│   │   ├── controls/                 # Institutional Governance Cards
-│   │   ├── flow/                     # Live Financial Flow Canvas & Animations
-│   │   ├── inspector/                # ML Risk Gauge & SHAP Attribution Panel
-│   │   ├── monitor/                  # Live Stream Ticker Side Feed
-│   │   ├── common/                   # Navigation Header & Status Bar
-│   │   └── upload/                   # Dataset Initialization View
-│   ├── types/                        # TypeScript Interfaces & Models
-│   ├── utils/                        # Data Parsers & Stream Controllers
-│   ├── App.tsx                       # Main Application Layout & State
-│   ├── index.css                     # Design Tokens & Keyframe Motion System
-│   └── main.tsx                      # Entry Point
-├── package.json
-├── tsconfig.json
-└── README.md
+├── ml/                       # Python ML Pipeline
+│   ├── data_loader.py        # PaySim dataset loader & schema validation
+│   ├── feature_engineering.py# Balance error features (errorBalanceOrig, errorBalanceDest) & log transforms
+│   ├── train_model.py        # XGBoost model training (200 trees, scale_pos_weight tuning)
+│   ├── predict.py            # FraudPredictor inference & risk score engine
+│   ├── explain.py            # TreeSHAP feature attribution & natural language generation
+│   ├── risk_scoring.py       # Composite risk scoring engine
+│   ├── evaluate.py           # Benchmark metrics evaluation
+│   └── requirements.txt      # Python ML dependencies
+│
+├── api/                      # FastAPI Service Layer
+│   ├── main.py               # REST API endpoints (/predict, /explain, /metadata)
+│   ├── prediction_service.py # Service wrapper
+│   └── requirements.txt      # API dependencies
+│
+├── models/                   # Serialized ML Artifacts
+│   ├── xgboost_model.json    # Trained XGBoost model weights
+│   └── model_metadata.json   # Hyperparameters & validation metrics
+│
+├── docs/                     # Technical Documentation
+│   ├── architecture.md       # Full architecture & ASCII data flow
+│   ├── ml_pipeline.md        # Feature formulas & TreeSHAP mathematics
+│   └── methodology.md       # Risk tiering & audit compliance controls
+│
+├── data/                     # Dataset Samples
+│   └── sample_transactions.csv
+│
+├── frontend/                 # React + TypeScript Investigation UI
+│   ├── src/                  # Financial Flow Canvas, Stream Ticker, SHAP Inspector
+│   ├── public/               # Static data & assets
+│   ├── package.json          # Frontend dependencies
+│   ├── tsconfig.json
+│   └── vite.config.ts
+│
+├── README.md                 # Project Overview & Setup Guide
+└── requirements.txt          # Top-Level Python Dependencies
 ```
 
 ---
 
-## 💻 Quick Start & Local Setup
+## 📊 Pre-Trained Model & Dataset Benchmark
 
-### Prerequisites
-- Node.js `v18.0.0+`
-- npm `v9.0.0+`
+The ML intelligence layer is trained on **1.11M+ PaySim synthetic financial transactions** with severe class imbalance:
 
-### Installation
+| Parameter | Metric Value |
+| :--- | :--- |
+| **Dataset** | PaySim Synthetic Financial Transactions |
+| **Training Records** | 1,119,136 transactions |
+| **Validation Subset** | 223,828 transactions |
+| **Algorithm** | XGBoost (`binary:logistic`) |
+| **Ensemble Trees** | 200 trees (`n_estimators: 200`) |
+| **Class Imbalance Ratio** | `scale_pos_weight: 200.418442` |
+| **Precision** | **0.72** |
+| **Recall** | **0.82** |
+| **F1 Score** | **0.77** |
+| **PR-AUC** | **0.87** |
+| **ROC-AUC** | **0.94** |
+
+---
+
+## 💻 Quick Start Guide
+
+### 1. Python ML & API Setup
 
 ```bash
-# 1. Clone the repository
+# Clone the repository
 git clone https://github.com/shinchxn/floware.git
 cd floware
 
-# 2. Install dependencies
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Test ML predictor self-check
+python ml/predict.py
+
+# Test TreeSHAP explainer self-check
+python ml/explain.py
+
+# Launch FastAPI backend service
+uvicorn api.main:app --reload --port 8000
+```
+FastAPI interactive Swagger documentation will be available at `http://localhost:8000/docs`.
+
+---
+
+### 2. React / TypeScript Frontend Setup
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install Node dependencies
 npm install
 
-# 3. Start the local development server
+# Start Vite local dev server
 npm run dev
 ```
-
-The application will launch locally at `http://localhost:3000/` (or next available port).
+The investigation interface will launch at `http://localhost:3000/`.
 
 ---
 
 ## 📄 License & Hackathon Submission
 
-This project is built for the **EFOS Global Finance Hackathon 2026 (Track 02: Audit & Risk, Case 1)** submission.
+Built for the **EFOS Global Finance Hackathon 2026 (Track 02: Audit & Risk, Case 1)**.
 
 Created by Team **FLOWARE**.
