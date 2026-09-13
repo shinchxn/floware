@@ -40,7 +40,7 @@ export const CompactStreamFeed: React.FC<CompactStreamFeedProps> = ({
 
         <div className="status-tag" style={{ fontSize: '0.6875rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
           <span className="status-dot"></span>
-          <span>LIVE (1.5s)</span>
+          <span>LIVE (1.0s)</span>
         </div>
       </div>
 

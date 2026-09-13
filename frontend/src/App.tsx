@@ -62,14 +62,15 @@ export const App: React.FC = () => {
     };
   }, []);
 
-  // Accelerated Autonomous Stream Ticker (Advances live transactions every 350ms for fast demo streaming)
+  // Continuous Autonomous Stream Ticker (Advances live transactions every 1,000ms)
   useEffect(() => {
     if (isLoading || allTransactions.length === 0) return;
 
     const interval = setInterval(() => {
       setStreamIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % allTransactions.length;
-        const incomingTx = allTransactions[nextIndex];
+        const nextIndex = prevIndex + 1;
+        const actualIdx = nextIndex % allTransactions.length;
+        const incomingTx = allTransactions[actualIdx];
 
         // If incoming transaction is flagged as HIGH risk, auto-focus ML Interception!
         if (incomingTx && incomingTx.risk_level === 'HIGH') {
@@ -79,16 +80,19 @@ export const App: React.FC = () => {
 
         return nextIndex;
       });
-    }, 350);
+    }, 1000);
 
     return () => clearInterval(interval);
   }, [isLoading, allTransactions]);
 
-  // Derived current visible stream slice
+  // Derived current visible stream slice (grows continuously and loops seamlessly)
   const visibleTransactions = useMemo(() => {
     if (allTransactions.length === 0) return [];
-    const sliceEnd = Math.max(35, streamIndex);
-    return allTransactions.slice(0, sliceEnd);
+    if (streamIndex <= allTransactions.length) {
+      return allTransactions.slice(0, streamIndex);
+    }
+    const remainder = streamIndex % allTransactions.length;
+    return [...allTransactions, ...allTransactions.slice(0, remainder)];
   }, [allTransactions, streamIndex]);
 
   const metrics = useMemo(() => {
@@ -207,7 +211,7 @@ export const App: React.FC = () => {
           <strong>FLOWARE Live Financial Flow Engine</strong> — EFOS Global Finance Hackathon 2026 (Track 02: Audit & Risk)
         </div>
         <div>
-          Rapid Live Stream (350ms Ticker) • XGBoost Model Interception & SHAP Explanations
+          Continuous Live Stream (1.0s Ticker) • XGBoost Model Interception & SHAP Explanations
         </div>
       </footer>
     </div>
