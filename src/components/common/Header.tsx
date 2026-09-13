@@ -21,8 +21,8 @@ export const Header: React.FC<HeaderProps> = ({
           <ShieldAlert size={22} />
         </div>
         <div>
-          <div className="header-title">FLOWARE Sentinel</div>
-          <div className="header-subtitle">Live Financial Transaction Monitoring & SHAP Explanation Engine</div>
+          <div className="header-title">FLOWARE</div>
+          <div className="header-subtitle">Real-Time Financial Transaction Monitoring & SHAP Explanation Engine</div>
         </div>
       </div>
 

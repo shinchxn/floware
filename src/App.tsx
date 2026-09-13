@@ -19,13 +19,12 @@ export const App: React.FC = () => {
   const [loadCount, setLoadCount] = useState(0);
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
 
-  // Stream Feed Pointer (Starts with initial window of 35 transactions, ticks every 1.5s)
+  // Stream Feed Pointer (Starts with initial window of 35 transactions, ticks every 350ms for rapid demo)
   const [streamIndex, setStreamIndex] = useState(35);
 
   // Selection & Investigation Focus State
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
   const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null);
-  const [lastInterceptedTxId, setLastInterceptedTxId] = useState<number | null>(null);
 
   // Auto-load project dataset on initial startup
   useEffect(() => {
@@ -46,7 +45,6 @@ export const App: React.FC = () => {
             if (firstFlagged) {
               setSelectedTransaction(firstFlagged);
               setSelectedAccountId(firstFlagged.fromAccount);
-              setLastInterceptedTxId(firstFlagged.id);
             } else {
               setSelectedTransaction(data[0]);
               setSelectedAccountId(data[0].fromAccount);
@@ -64,7 +62,7 @@ export const App: React.FC = () => {
     };
   }, []);
 
-  // Autonomous Stream Ticker (Advances live transactions every 1.5s)
+  // Accelerated Autonomous Stream Ticker (Advances live transactions every 350ms for fast demo streaming)
   useEffect(() => {
     if (isLoading || allTransactions.length === 0) return;
 
@@ -73,24 +71,22 @@ export const App: React.FC = () => {
         const nextIndex = (prevIndex + 1) % allTransactions.length;
         const incomingTx = allTransactions[nextIndex];
 
-        // If incoming transaction is flagged as HIGH risk, auto-focus ML Sentinel Interception!
+        // If incoming transaction is flagged as HIGH risk, auto-focus ML Interception!
         if (incomingTx && incomingTx.risk_level === 'HIGH') {
           setSelectedTransaction(incomingTx);
           setSelectedAccountId(incomingTx.fromAccount);
-          setLastInterceptedTxId(incomingTx.id);
         }
 
         return nextIndex;
       });
-    }, 1500);
+    }, 350);
 
     return () => clearInterval(interval);
   }, [isLoading, allTransactions]);
 
-  // Derived current visible stream slice (latest stream records)
+  // Derived current visible stream slice
   const visibleTransactions = useMemo(() => {
     if (allTransactions.length === 0) return [];
-    // Slice up to streamIndex
     const sliceEnd = Math.max(35, streamIndex);
     return allTransactions.slice(0, sliceEnd);
   }, [allTransactions, streamIndex]);
@@ -120,7 +116,7 @@ export const App: React.FC = () => {
             <Cpu size={32} className="animate-spin" />
           </div>
           <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)', marginBottom: '8px' }}>
-            FLOWARE Sentinel Initializing
+            FLOWARE Initializing
           </h2>
           <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '24px' }}>
             Loading live financial flow ecosystem & pre-trained XGBoost SHAP logic...
@@ -208,10 +204,10 @@ export const App: React.FC = () => {
 
       <footer style={{ borderTop: '1px solid var(--color-border-subtle)', padding: '16px 32px', backgroundColor: '#FAFAF9', fontSize: '0.8125rem', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
-          <strong>FLOWARE Autonomous Live Transaction Monitor</strong> — EFOS Global Finance Hackathon 2026 (Track 02: Audit & Risk)
+          <strong>FLOWARE Live Financial Flow Engine</strong> — EFOS Global Finance Hackathon 2026 (Track 02: Audit & Risk)
         </div>
         <div>
-          Autonomous Stream Engine (1.5s Ticker) • XGBoost Model Interception & SHAP Explanations
+          Rapid Live Stream (350ms Ticker) • XGBoost Model Interception & SHAP Explanations
         </div>
       </footer>
     </div>
