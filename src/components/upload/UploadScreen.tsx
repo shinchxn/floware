@@ -77,21 +77,21 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({ onDataLoaded }) => {
     setStatusMessage('Loading local hackathon dataset...');
 
     try {
-      // Fetch final_scored_transactions .csv
-      const csvResponse = await fetch('/final_scored_transactions .csv');
+      // Fetch scored_transactions.csv
+      const csvResponse = await fetch('/data/scored_transactions.csv');
       if (!csvResponse.ok) {
         throw new Error('Could not find local sample CSV file.');
       }
       const csvBlob = await csvResponse.blob();
-      const sampleCsvFile = new File([csvBlob], 'final_scored_transactions .csv', { type: 'text/csv' });
+      const sampleCsvFile = new File([csvBlob], 'scored_transactions.csv', { type: 'text/csv' });
 
-      // Fetch model_B .json
+      // Fetch model_xgboost.json
       let sampleJsonFile: File | null = null;
       try {
-        const jsonResponse = await fetch('/model_B .json');
+        const jsonResponse = await fetch('/data/model_xgboost.json');
         if (jsonResponse.ok) {
           const jsonBlob = await jsonResponse.blob();
-          sampleJsonFile = new File([jsonBlob], 'model_B .json', { type: 'application/json' });
+          sampleJsonFile = new File([jsonBlob], 'model_xgboost.json', { type: 'application/json' });
         }
       } catch (err) {
         console.warn('Sample JSON model file fetch omitted:', err);

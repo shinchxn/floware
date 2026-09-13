@@ -79,6 +79,35 @@ graph TD
 
 ---
 
+## 📁 Repository Structure
+
+```
+floware/
+├── public/
+│   └── data/
+│       ├── scored_transactions.csv    # PaySim transaction stream with ML scores
+│       └── model_xgboost.json         # Pre-trained XGBoost model configuration & weights
+├── src/
+│   ├── components/
+│   │   ├── auditor/                  # Auditor Review Queue & Tooltips
+│   │   ├── controls/                 # Institutional Governance Cards
+│   │   ├── flow/                     # Live Financial Flow Canvas & Animations
+│   │   ├── inspector/                # ML Risk Gauge & SHAP Attribution Panel
+│   │   ├── monitor/                  # Live Stream Ticker Side Feed
+│   │   ├── common/                   # Navigation Header & Status Bar
+│   │   └── upload/                   # Dataset Initialization View
+│   ├── types/                        # TypeScript Interfaces & Models
+│   ├── utils/                        # Data Parsers & Stream Controllers
+│   ├── App.tsx                       # Main Application Layout & State
+│   ├── index.css                     # Design Tokens & Keyframe Motion System
+│   └── main.tsx                      # Entry Point
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+---
+
 ## 💻 Quick Start & Local Setup
 
 ### Prerequisites
